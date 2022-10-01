@@ -32,11 +32,23 @@ namespace Parcial_3.Controllers
             }
         }
 
-        public ActionResult About()
+        string Baseurl2 = "http://localhost:3000/leagues";
+        public async Task<ActionResult> About()
         {
-            ViewBag.Message = "Your application description page.";
+            Root EmpInfo = new Root();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Baseurl2);
+                client.DefaultRequestHeaders.Clear();
+                HttpResponseMessage Res = await client.GetAsync("");
+                if (Res.IsSuccessStatusCode)
+                {
+                    var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+                    EmpInfo = JsonConvert.DeserializeObject<Root>(EmpResponse);
 
-            return View();
+                }
+                return View(EmpInfo);
+            }
         }
 
         public ActionResult Contact()
