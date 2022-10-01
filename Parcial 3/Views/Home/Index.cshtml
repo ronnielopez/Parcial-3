@@ -1,0 +1,53 @@
+﻿@model Parcial_3.Models.player.Root
+
+
+@{
+    ViewBag.Title = "PLayer leagues";
+}
+
+
+<div class="container">
+
+    <div class="col-sm-12 my-5 text-center">
+        <h2 class="font-weight-bold">
+            League of Soccer
+        </h2>
+    </div>
+
+    <table class="table">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Slug
+            </th>
+            <th>
+                Abbr
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.data)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.slug)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.abbr)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>
