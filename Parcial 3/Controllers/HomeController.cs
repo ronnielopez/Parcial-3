@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using Parcial_3.Models.player;
+using Parcial_3.Models.LaravelApi;
 
 namespace Parcial_3.Controllers
 {
@@ -32,10 +33,10 @@ namespace Parcial_3.Controllers
             }
         }
 
-        string Baseurl2 = "http://localhost:3000/leagues";
+        string Baseurl2 = "http://ec2-15-223-48-152.ca-central-1.compute.amazonaws.com/api/players";
         public async Task<ActionResult> About()
         {
-            Root EmpInfo = new Root();
+            List<Playerapi> EmpInfo = new List<Playerapi>();
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Baseurl2);
@@ -44,7 +45,7 @@ namespace Parcial_3.Controllers
                 if (Res.IsSuccessStatusCode)
                 {
                     var EmpResponse = Res.Content.ReadAsStringAsync().Result;
-                    EmpInfo = JsonConvert.DeserializeObject<Root>(EmpResponse);
+                    EmpInfo = JsonConvert.DeserializeObject<List<Playerapi>>(EmpResponse);
 
                 }
                 return View(EmpInfo);

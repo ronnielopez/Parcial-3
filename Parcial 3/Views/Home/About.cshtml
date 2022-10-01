@@ -1,7 +1,56 @@
-﻿@{
-    ViewBag.Title = "About";
-}
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+﻿@model IEnumerable<Parcial_3.Models.LaravelApi.Playerapi>
 
-<p>Use this area to provide additional information.</p>
+@{
+    ViewBag.Title = "Laravel Api";
+}
+
+<h2>APi LARAVEL</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Created at
+        </th>
+        <th>
+           Updated at
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Position
+        </th>
+        <th>
+            Age
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.created_at)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.updated_at)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.position)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.age)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+            </td>
+        </tr>
+    }
+
+</table>
