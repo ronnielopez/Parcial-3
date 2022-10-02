@@ -10,12 +10,6 @@
 <table class="table">
     <tr>
         <th>
-            Created at
-        </th>
-        <th>
-           Updated at
-        </th>
-        <th>
             Name
         </th>
         <th>
@@ -30,12 +24,6 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.created_at)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.updated_at)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.name)
             </td>
