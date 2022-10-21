@@ -1,0 +1,100 @@
+﻿
+@{
+    ViewBag.Title = "Update";
+    Layout = "~/Views/_LayoutAdmin/_LayoutAdmin.cshtml";
+}
+
+<h2 class="text-white my-5 pl-5">Editar Manifiestos</h2>
+
+<div class="container">
+    <form>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-white">Seleccione un cliente</label>
+            <select class="custom-select" id="client">
+                <option selected>Clientes...</option>
+                @foreach (var cliente in ViewBag.Clientes)
+                {
+                    if (ViewBag.idCliente == cliente.id_client)
+                    {
+                        <option value="@cliente.id_client" selected>@cliente.names</option>
+                    }
+                    else
+                    {
+                    <option value="@cliente.id_client">@cliente.names</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-white">Seleccione una bodega a enviar</label>
+            <select class="custom-select" id="warehouse">
+                <option selected>Bodegas...</option>
+                @foreach (var warehouse in ViewBag.Warehouse)
+                {
+                    if (ViewBag.idWarehouse == warehouse.id_warehouse)
+                    {
+                <option value="@warehouse.id_warehouse" selected>@warehouse.name_warehouse</option>
+                    }
+                    else
+                    {
+                        <option value="@warehouse.id_warehouse">@warehouse.name_warehouse</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-white">Seleccione sucursal a enviar</label>
+            <select class="custom-select" id="branchoffice">
+                <option selected>Sucursales...</option>
+                @foreach (var sucursal in ViewBag.BranchOffice)
+                {
+                    if (ViewBag.idBranchOffice == sucursal.id_branch)
+                    {
+                <option value="@sucursal.id_branch" selected>@sucursal.name_branch</option>
+                    }
+                    else
+                    {
+                        <option value="@sucursal.id_branch">@sucursal.name_branch</option>
+                    }
+                    
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-white">Seleccione un departamento</label>
+            <select class="custom-select" id="department">
+                <option selected>Departamentos...</option>
+                @foreach (var department in ViewBag.Department)
+                {
+                    if (ViewBag.idDepartment == department.id_department)
+                    {
+                <option value="@department.id_department" selected>@department.department_name - @department.prefix</option>
+                    }
+                    else
+                    {
+                        <option value="@department.id_department">@department.department_name - @department.prefix</option>
+                    }
+                    
+                }
+            </select>
+        </div>
+        <div class="mb-3 form-check text-center">
+            <input type="checkbox" class="form-check-input" id="active">
+            <label class="form-check-label text-white" for="exampleCheck1">Activo</label>
+        </div>
+        <div class="text-center my-5">
+            <button type="submit" class="btn btn-lg btn-primary" id="frm">Crear</button>
+        </div>
+    </form>
+</div>
+
+<div class="pl-5">
+    <a href="/Manifiestos/index" class="btn btn-warning text-white">Regresar</a>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#active").prop('checked',@ViewBag.active == 1 ? true : false);
+    });
+
+</script>

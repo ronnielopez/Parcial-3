@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/_LayoutAdmin/_LayoutAdmin.cshtml";
+}
+<h2 class="text-white my-5 pl-5">Crear Manifiestos</h2>
+
+<div class="container">
+    <form>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-white">Seleccione un cliente</label>
+            <select class="custom-select" id="client">
+                <option selected>Clientes...</option>
+                @foreach (var cliente in ViewBag.Clientes)
+                {
+                    <option value="@cliente.id_client">@cliente.names</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-white">Seleccione una bodega a enviar</label>
+            <select class="custom-select" id="warehouse">
+                <option selected>Bodegas...</option>
+                @foreach (var warehouse in ViewBag.Warehouse)
+                {
+                    <option value="@warehouse.id_warehouse">@warehouse.name_warehouse</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-white">Seleccione sucursal a enviar</label>
+            <select class="custom-select" id="branchoffice">
+                <option selected>Sucursales...</option>
+                @foreach (var sucursal in ViewBag.BranchOffice)
+                {
+                    <option value="@sucursal.id_branch">@sucursal.name_branch</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-white">Seleccione un departamento</label>
+            <select class="custom-select" id="department">
+                <option selected>Departamentos...</option>
+                @foreach (var department in ViewBag.Department)
+                {
+                    <option value="@department.id_department" >@department.department_name - @department.prefix</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3 form-check text-center">
+            <input type="checkbox" class="form-check-input" id="active">
+            <label class="form-check-label text-white" for="exampleCheck1">Activo</label>
+        </div>
+        <div class="text-center my-5">
+            <button type="submit" class="btn btn-lg btn-primary" id="frm">Crear</button>
+        </div>
+    </form>
+</div>
+
+<div class="pl-5">
+    <a href="/Manifiestos/index" class="btn btn-warning text-white">Regresar</a>
+</div>
+
+<script>
+    $("#frm").click(function (e) {
+        e.preventDefault()
+        url = "@Url.Content("~/Manifiestos/CreatePost")"
+        let ea = document.getElementById("department");
+        let text = ea.options[ea.selectedIndex].text.toUpperCase();
+        let parametros = {
+            "id_client": $('#client').val(),
+            "tracking_number": (Math.floor(Math.random() * 100000000) + 100000000) + text[0] + text[1] + text[2],
+            "id_warehouse_dest": $('#warehouse').val(),
+            "id_branchoffice": $("#branchoffice").val(),
+            "id_department": $("#department").val(),
+            "active": document.getElementById("active").value ? 1 : 0
+        }
+          $.post(url, parametros, function (data) {
+            if (data == "1") {
+                Swal.fire({ title: 'Manifiesto Creado correctamente', icon: 'success' }).then(() => {
+                     document.location.href = "@Url.Content("~/Manifiestos/Index")";
+                    })
+              } else {
+                Swal.fire({ title: 'Error al crear el manifiesto', icon: 'error' })
+            }
+                 
+          })
+        
+    })
+
+
+
+
+</script>
+

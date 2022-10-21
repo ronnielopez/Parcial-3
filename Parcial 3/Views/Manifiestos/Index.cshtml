@@ -1,0 +1,100 @@
+﻿@model IEnumerable<Parcial_3.Models.ManifiestoModel>
+
+@{
+    ViewBag.Title = "Index - Manifiesto";
+    Layout = "~/Views/_LayoutAdmin/_LayoutAdmin.cshtml";
+}
+
+<div class="row container">
+    <div class="col-sm-12 text-right my-4 container">
+        <a class="btn btn-lg btn-success" href="/Manifiestos/Create">Crear Manifiesto</a>
+    </div>
+</div>
+
+<table class="table container my-5 text-white">
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            Nombre Cliente
+        </th>
+        <th>
+            Fecha de envio
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Activo
+        </th>
+        <th>Accion</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id_shipment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.client_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.client_send_date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.shipment_status_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.active)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Update", new { id = item.id_shipment }, new { @class = "btn btn-warning" })
+                <span class="btn btn-primary" onclick="getDetails(@item)"> Visualizar </span>
+                @{ if (item.active == 1)
+                    {
+                        <span class="btn btn-danger" onclick="getId(@item.id_shipment)"> Desactivar </span>
+                    }
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+<script>
+
+    function getId(id) {
+        Swal.fire({
+            title: 'Estas seguro que quieres desactivar esta manifiesto?',
+            showDenyButton: true,
+            icon: 'question',
+            confirmButtonText: 'Desactivar',
+            denyButtonText: `Cancelar`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                var settings = {
+                    "url": "http://localhost:61212/api/shipment/" + id,
+                    "method": "DELETE",
+                    "timeout": 0,
+                };
+
+                $.ajax(settings).done(function (response) {
+                    Swal.fire('Desactivado correctamente!', '', 'success').then(() => {
+                        document.location.href = "@Url.Content("~/Manifiestos/Index")";
+                    })
+
+                });
+            }
+        })
+    }
+
+    function getDetails(detalle) {
+
+        console.log(detalle)
+
+    }
+
+</script>

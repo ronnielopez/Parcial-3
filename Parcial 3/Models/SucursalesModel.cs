@@ -9,6 +9,7 @@ namespace Parcial_3.Models
     {
         public int id_branch { get; set; }
         public string name_branch { get; set; }
+        public int id_warehouse { get; set; }
         public int active { get; set; }
     }
 }
