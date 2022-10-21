@@ -8,6 +8,7 @@ namespace Parcial_3
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new Filter.VerifiySession());
         }
     }
 }

@@ -6,9 +6,9 @@ using System.Web.Mvc;
 
 namespace Parcial_3.Controllers
 {
-    public class HomeController : Controller
+    public class ManifiestosController : Controller
     {
-        // GET: HomeAdmin
+        // GET: Manifiestos
         public ActionResult Index()
         {
             return View();

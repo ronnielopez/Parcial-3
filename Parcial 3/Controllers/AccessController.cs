@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 using Parcial_3.Models;
 
 namespace Parcial_3.Controllers
@@ -14,36 +18,33 @@ namespace Parcial_3.Controllers
         {
             return View();
         }
-
-        public ActionResult Login(string user, string password)
+        string Baseurl = "http://localhost:61212/api/login/";
+        public async Task<ActionResult> Login(string user, string password)
         {
             try
             {
-                using (Parcial3Entities db = new Parcial3Entities())
+                UserModel EmpInfo = new UserModel();
+                using (var client = new HttpClient())
                 {
-                    //select * from --- >Esto es LINQ
-                    // select * from MIS_DATOS as d 
-                    var lst = from d in db.users
-                              where d.nombre == user && d.pwd == password
-                              select d;  //select * from MIS_DATOS
-                    if (lst.Count() > 0)
+                    client.BaseAddress = new Uri(Baseurl);
+                    client.DefaultRequestHeaders.Clear();
+                    LoginModel login = new LoginModel();
+                    login.email = user;
+                    login.pwd = password;
+                    var myContent = JsonConvert.SerializeObject(login);
+                    var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
+                    var byteContent = new ByteArrayContent(buffer);
+                    byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                    HttpResponseMessage Res = await client.PostAsync(Baseurl, byteContent);
+                    if (Res.IsSuccessStatusCode)
                     {
-                        user oUser = lst.First();
-
-                        Session["User"] = oUser;
-
-                        return Content("1");
-
+                        var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+                        EmpInfo = JsonConvert.DeserializeObject<UserModel>(EmpResponse);
+                        Session["user"] = EmpInfo;
                     }
-                    else
-                    {
-                        return Content("Usuario sin Acceso ");
-                    }
-
+                    return Content((EmpInfo.type_user).ToString());
                 }
-
-
-
 
             }
             catch (Exception ex)
