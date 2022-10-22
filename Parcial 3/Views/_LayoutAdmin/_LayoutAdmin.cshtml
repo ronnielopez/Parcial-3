@@ -42,10 +42,7 @@
                 {
                     case 1:
                         <li class="my-4">
-                            <a href="#">Usuarios</a>
-                        </li>
-                        <li class="my-4">
-                            <a href="#">Reportes</a>
+                            <a href="/User/">Usuarios</a>
                         </li>
                         <li class="my-4">
                             <a href="/Manifiestos/">Manifiestos</a>
@@ -55,6 +52,9 @@
                         </li>
                         <li class="my-4">
                             <a href="#">Clientes</a>
+                        </li>
+                        <li class="my-4">
+                            <a href="/Tracking">Tracking</a>
                         </li>
                         break;
                     case 2:
@@ -71,13 +71,10 @@
                         break;
                     case 3:
                         <li class="my-4">
-                            <a href="#">Mis envios</a>
+                            <a href="/Manifiestos/">Mis envios</a>
                         </li>
                         <li class="my-4">
-                            <a href="#">Tracking</a>
-                        </li>
-                        <li class="my-4">
-                            <a href="#">Historial</a>
+                            <a href="/Tracking">Tracking</a>
                         </li>
                         break;
                     case 4:
@@ -92,6 +89,9 @@
                         break;
                 }
             }
+            <li class="my-4" id="signOut">
+                <a href="#">Sign out</a>
+            </li>
         </ul>
     </aside>
 
@@ -112,6 +112,23 @@
     @Scripts.Render("~/bundles/bootstrap")
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.0/dist/sweetalert2.min.js"></script>
     <script src="https://momentjs.com/downloads/moment.js"></script>
+
+    <script>
+        $("#signOut").click(() => {
+        url = "@Url.Content("~/_LayoutAdmin/SignOut")"
+          $.post(url, null, function (data) {
+            if (data == "1") {
+                Swal.fire({ title: 'Session cerrada correctamente', icon: 'success' }).then(() => {
+                     document.location.href = "@Url.Content("~/Access/Index")";
+                    })
+              } else {
+                Swal.fire({ title: 'Error al cerrar session', icon: 'error' })
+            }
+                 
+          })
+        })
+    </script>
+
 </body>
 </html>
 

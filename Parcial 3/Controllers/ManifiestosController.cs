@@ -197,6 +197,37 @@ namespace Parcial_3.Controllers
                     ViewBag.Department = departmentList;
                 }
             }
+
+            string shipmentStatusURL = "http://localhost:61212/api/shipmentstatus/";
+            List<ShipmentStatusModel> shipmentStatusList = new List<ShipmentStatusModel>();
+            using (var shipmentStatus = new HttpClient())
+            {
+                shipmentStatus.BaseAddress = new Uri(shipmentStatusURL);
+                shipmentStatus.DefaultRequestHeaders.Clear();
+                HttpResponseMessage Res = await shipmentStatus.GetAsync("");
+                if (Res.IsSuccessStatusCode)
+                {
+                    var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+                    shipmentStatusList = JsonConvert.DeserializeObject<List<ShipmentStatusModel>>(EmpResponse);
+                    ViewBag.ShipmentStatus = shipmentStatusList;
+                }
+            }
+
+            string paymentTypeURL = "http://localhost:61212/api/paymenttype/";
+            List<PaymentTypeModel> paymentTypeList = new List<PaymentTypeModel>();
+            using (var shipmentStatus = new HttpClient())
+            {
+                shipmentStatus.BaseAddress = new Uri(paymentTypeURL);
+                shipmentStatus.DefaultRequestHeaders.Clear();
+                HttpResponseMessage Res = await shipmentStatus.GetAsync("");
+                if (Res.IsSuccessStatusCode)
+                {
+                    var EmpResponse = Res.Content.ReadAsStringAsync().Result;
+                    paymentTypeList = JsonConvert.DeserializeObject<List<PaymentTypeModel>>(EmpResponse);
+                    ViewBag.PaymentType = paymentTypeList;
+                }
+            }
+
             string CreateManifiestosurl = "http://localhost:61212/api/shipment/"+id;
             
                 using (var client = new HttpClient())
@@ -214,6 +245,14 @@ namespace Parcial_3.Controllers
                     ViewBag.idBranchOffice = manifiestos.id_branchoffice;
                     ViewBag.idDepartment = manifiestos.id_department;
                     ViewBag.active = manifiestos.active;
+                    ViewBag.idShipment = id;
+                    ViewBag.idShipmentStatus = manifiestos.shipment_status;
+                    ViewBag.ArrivalWarehouseDate = manifiestos.arrival_warehouse_date;
+                    ViewBag.ArrivalBranchOfficeDate = manifiestos.arrival_branchoffice;
+                    ViewBag.ClientSendDate = manifiestos.client_send_date;
+                    ViewBag.FailedAttempt = manifiestos.failed_attempt;
+                    ViewBag.idPaymentType = manifiestos.payment_type;
+                    ViewBag.FailedAttempt = manifiestos.failed_attempt;
                 }
                     return View();
                 }

@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Parcial_3.Models.UserModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/_LayoutAdmin/_LayoutAdmin.cshtml";
+}
+
+<div class="row container">
+    <div class="col-sm-12 text-right my-4 container">
+        <a class="btn btn-lg btn-success" href="/User/create">Crear Usuario</a>
+    </div>
+</div>
+
+<table class="table container my-5 text-white">
+    <tr>
+        <th>
+            ID
+        </th>
+        <th>
+            Nombre
+        </th>
+        <th>
+            Activo
+        </th>
+        <th>
+            Acciones
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.id_user)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.active)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Update", new { id = item.id_user }, new { @class = "btn btn-primary" })
+                <span class="btn btn-danger" onclick="getId(@item.id_user)"> Desactivar </span>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<script>
+
+    function getId(id) {
+        Swal.fire({
+            title: 'Estas seguro que quieres desactivar esta sucursal?',
+            showDenyButton: true,
+            confirmButtonText: 'Desactivar',
+            denyButtonText: `Cancelar`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                var settings = {
+                    "url": "http://localhost:61212/api/user/" + id,
+                    "method": "DELETE",
+                    "timeout": 0,
+                };
+
+                $.ajax(settings).done(function (response) {
+                    Swal.fire('Desactivado correctamente!', '', 'success').then(() => {
+                        document.location.href = "@Url.Content("~/User/Index")";
+                    })
+
+                });
+            }
+        })
+    }
+
+</script>
+
+

@@ -11,13 +11,13 @@ using System.Web.Mvc;
 
 namespace Parcial_3.Controllers
 {
-    public class SucursulesController : Controller
+    public class UserController : Controller
     {
-        // GET: Sucursules
-        string Baseurl = "http://localhost:61212/api/branchoffice/";
+        // GET: User
+        string Baseurl = "http://localhost:61212/api/user/";
         public async Task<ActionResult> Index()
         {
-            List<SucursalesModel> sucursales = new List<SucursalesModel>();
+            List<UserModel> userList = new List<UserModel>();
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Baseurl);
@@ -26,16 +26,17 @@ namespace Parcial_3.Controllers
                 if (Res.IsSuccessStatusCode)
                 {
                     var EmpResponse = Res.Content.ReadAsStringAsync().Result;
-                    sucursales = JsonConvert.DeserializeObject<List<SucursalesModel>>(EmpResponse);
+                    userList = JsonConvert.DeserializeObject<List<UserModel>>(EmpResponse);
 
                 }
-                return View(sucursales);
+                return View(userList);
             }
         }
 
-        public async Task<ActionResult> Create() {
-            string departmentURL = "http://localhost:61212/api/warehouse/";
-            List<WarehouseModel> departmentList = new List<WarehouseModel>();
+        public async Task<ActionResult> Create()
+        {
+            string departmentURL = "http://localhost:61212/api/usertype/";
+            List<UserTypeModel> departmentList = new List<UserTypeModel>();
             using (var department = new HttpClient())
             {
                 department.BaseAddress = new Uri(departmentURL);
@@ -44,26 +45,29 @@ namespace Parcial_3.Controllers
                 if (Res.IsSuccessStatusCode)
                 {
                     var EmpResponse = Res.Content.ReadAsStringAsync().Result;
-                    departmentList = JsonConvert.DeserializeObject<List<WarehouseModel>>(EmpResponse);
-                    ViewBag.WarehouseList = departmentList;
+                    departmentList = JsonConvert.DeserializeObject<List<UserTypeModel>>(EmpResponse);
+                    ViewBag.UserType = departmentList;
                 }
             }
             return View();
         }
-        public async Task<ActionResult> CreatePost(string name_branch, int active, int id_warehouse)
+
+        public async Task<ActionResult> CreatePost(string names, string email, string pwd, int active, int type_user)
         {
             try
             {
-                SucursalesModel EmpInfo = new SucursalesModel();
+                UserModel EmpInfo = new UserModel();
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(Baseurl);
                     client.DefaultRequestHeaders.Clear();
-                    SucursalesModel sucursal = new SucursalesModel();
-                    sucursal.name_branch = name_branch;
-                    sucursal.active = active;
-                    sucursal.id_warehouse = id_warehouse;
-                    var myContent = JsonConvert.SerializeObject(sucursal);
+                    UserModel usuario = new UserModel();
+                    usuario.names = names;
+                    usuario.email = email;
+                    usuario.pwd = pwd;
+                    usuario.type_user = type_user;
+                    usuario.active = active;
+                    var myContent = JsonConvert.SerializeObject(usuario);
                     var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
                     var byteContent = new ByteArrayContent(buffer);
                     byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -83,10 +87,11 @@ namespace Parcial_3.Controllers
 
         }
 
+
         public async Task<ActionResult> Update(int id)
         {
-            string departmentURL = "http://localhost:61212/api/warehouse/";
-            List<WarehouseModel> departmentList = new List<WarehouseModel>();
+            string departmentURL = "http://localhost:61212/api/usertype/";
+            List<UserTypeModel> departmentList = new List<UserTypeModel>();
             using (var department = new HttpClient())
             {
                 department.BaseAddress = new Uri(departmentURL);
@@ -95,12 +100,12 @@ namespace Parcial_3.Controllers
                 if (Res.IsSuccessStatusCode)
                 {
                     var EmpResponse = Res.Content.ReadAsStringAsync().Result;
-                    departmentList = JsonConvert.DeserializeObject<List<WarehouseModel>>(EmpResponse);
-                    ViewBag.WarehouseList = departmentList;
+                    departmentList = JsonConvert.DeserializeObject<List<UserTypeModel>>(EmpResponse);
+                    ViewBag.UserType = departmentList;
                 }
             }
 
-            SucursalesModel sucursal = new SucursalesModel();
+            UserModel sucursal = new UserModel();
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri(Baseurl + id);
@@ -109,46 +114,17 @@ namespace Parcial_3.Controllers
                 if (Res.IsSuccessStatusCode)
                 {
                     var EmpResponse = Res.Content.ReadAsStringAsync().Result;
-                    sucursal = JsonConvert.DeserializeObject<SucursalesModel>(EmpResponse);
-                    ViewBag.name = sucursal.name_branch;
+                    sucursal = JsonConvert.DeserializeObject<UserModel>(EmpResponse);
+                    ViewBag.name = sucursal.names;
                     ViewBag.id = id;
                     ViewBag.active = sucursal.active;
-                    ViewBag.idWarehouse = sucursal.id_warehouse;
+                    ViewBag.idType= sucursal.type_user;
+                    ViewBag.Email = sucursal.email;
                 }
                 return View();
             }
         }
-        public async Task<ActionResult> UpdatePost(string name_branch, int active, int id)
-        {
-            try
-            {
-                
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri(Baseurl + id);
-                    client.DefaultRequestHeaders.Clear();
-                    SucursalesModel sucursal = new SucursalesModel();
-                    sucursal.name_branch = name_branch;
-                    sucursal.active = active;
-                    sucursal.id_branch = id;
-                    var myContent = JsonConvert.SerializeObject(sucursal);
-                    var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
-                    var byteContent = new ByteArrayContent(buffer);
-                    byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                    HttpResponseMessage Res = await client.PutAsync(Baseurl, byteContent);
-                    if (Res.IsSuccessStatusCode)
-                    {
-                        return Content("1");
-                    }
-                    return Content("0 * " + Res);
-                }
 
-            }
-            catch (Exception ex)
-            {
-                return Content("Error de aplicativo" + ex.Message);
-            }
 
-        }
     }
 }

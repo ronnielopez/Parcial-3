@@ -2,6 +2,13 @@
 
 @{
     ViewBag.Title = "Index - Manifiesto";
+    var oUser = (Parcial_3.Models.UserModel)System.Web.HttpContext.Current.Session["user"];
+    if (oUser != null)
+    {
+        ViewBag.Names = oUser.names;
+        ViewBag.type = oUser.type_user;
+        ViewBag.typeN = oUser.name_type_user;
+    }
     Layout = "~/Views/_LayoutAdmin/_LayoutAdmin.cshtml";
 }
 
@@ -50,8 +57,13 @@
                 @Html.DisplayFor(modelItem => item.active)
             </td>
             <td>
-                @Html.ActionLink("Editar", "Update", new { id = item.id_shipment }, new { @class = "btn btn-warning" })
-                <span class="btn btn-primary" onclick="getDetails(@item)"> Visualizar </span>
+                @{ if (ViewBag.type != 3)
+                    {
+                        @Html.ActionLink("Editar", "Update", new { id = item.id_shipment }, new { @class = "btn btn-warning" })
+                    }
+                }
+
+                <span class="btn btn-primary" onclick="getDetails('@item.client_name' , '@item.shipment_status_name' , '@item.tracking_number')"> Visualizar </span>
                 @{ if (item.active == 1)
                     {
                         <span class="btn btn-danger" onclick="getId(@item.id_shipment)"> Desactivar </span>
@@ -64,6 +76,19 @@
 </table>
 
 <script>
+
+
+    function getDetails(client_name, shipment_status, tracking_number) {
+
+        Swal.fire({
+            title: 'Manifiesto - ' + tracking_number,
+            text: client_name,
+            html:`<div class='mb-2'>
+             <span>Cliente - ${client_name} </span> </div>
+            <span class='text-primary'>Estado - ${shipment_status} </span>`
+        })
+
+    }
 
     function getId(id) {
         Swal.fire({
@@ -89,12 +114,6 @@
                 });
             }
         })
-    }
-
-    function getDetails(detalle) {
-
-        console.log(detalle)
-
     }
 
 </script>

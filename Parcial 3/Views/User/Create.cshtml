@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Parcial_3.Models.UserModel>
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/_LayoutAdmin/_LayoutAdmin.cshtml";
+}
+
+<h2 class="text-white my-5 pl-5">Crear Usuario</h2>
+
+<div class="container">
+    <form>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-white">Nombres de usuario</label>
+            <input type="text" class="form-control" id="nombre" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text text-white">Colocar el nombre de usuario</div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-white">Correo electronico</label>
+            <input type="email" class="form-control" id="email" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text text-white">Colocar el correo electronico</div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-white">Contraseña</label>
+            <input type="text" class="form-control" id="pwd" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text text-white">Colocar la contraseña</div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-white">Seleccione un tipo de usuario</label>
+            <select class="custom-select" id="type_user">
+                <option value="0">Tipo de usuario....</option>
+                @foreach (var warehouse in ViewBag.UserType)
+                {
+                    <option value="@warehouse.id_type">@warehouse.name_type</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3 form-check text-center">
+            <input type="checkbox" class="form-check-input" id="active">
+            <label class="form-check-label text-white" for="exampleCheck1">Activo</label>
+        </div>
+        <div class="text-center my-5">
+            <button type="submit" class="btn btn-lg btn-primary" id="frm">Crear</button>
+        </div>
+    </form>
+</div>
+
+<div class="pl-5">
+    <a href="/User/index" class="btn btn-warning text-white">Regresar</a>
+</div>
+
+<script>
+    $("#frm").click(function (e) {
+        e.preventDefault()
+        url = "@Url.Content("~/User/CreatePost")"
+        let parametros = {
+            "names": document.getElementById("nombre").value,
+            "email": document.getElementById("email").value,
+            "pwd": document.getElementById("pwd").value,
+            "type_user": $("#type_user").val(),
+            "active": document.getElementById("active").value ? 1 : 0
+        }
+        $.post(url, parametros, function (data) {
+            if (data == "1") {
+                 document.location.href = "@Url.Content("~/User/Index")";
+                         } else {
+                console.log("Error al insertar")
+            }
+                 })
+    })
+
+
+
+</script>

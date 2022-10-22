@@ -8,18 +8,28 @@
 <h2 class="text-white my-5 pl-5">Crear sucursal</h2>
 
 <div class="container">
-    <form >
+    <form>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label text-white">Nombre sucursal</label>
             <input type="text" class="form-control" id="nombre" aria-describedby="emailHelp">
             <div id="emailHelp" class="form-text text-white">Colocar el nombre de la sucursal.</div>
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-white">Seleccione una bodega</label>
+            <select class="custom-select" id="warehouse">
+                <option value="0">Bodega....</option>
+                @foreach (var warehouse in ViewBag.WarehouseList)
+                {
+                    <option value="@warehouse.id_warehouse">@warehouse.name_warehouse</option>
+                }
+            </select>
         </div>
         <div class="mb-3 form-check text-center">
             <input type="checkbox" class="form-check-input" id="active">
             <label class="form-check-label text-white" for="exampleCheck1">Activo</label>
         </div>
         <div class="text-center my-5">
-            <button type="submit" class="btn btn-lg btn-primary" id="frm" >Crear</button>
+            <button type="submit" class="btn btn-lg btn-primary" id="frm">Crear</button>
         </div>
     </form>
 </div>
@@ -34,6 +44,7 @@
         url = "@Url.Content("~/Sucursules/CreatePost")"
         let parametros = {
             "name_branch": document.getElementById("nombre").value,
+            "id_warehouse": $("#warehouse").val(),
             "active": document.getElementById("active").value ? 1 : 0
         }
         $.post(url, parametros, function (data) {

@@ -11,7 +11,7 @@
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label text-white">Seleccione un cliente</label>
             <select class="custom-select" id="client">
-                <option selected>Clientes...</option>
+                <option selected value="0">Clientes...</option>
                 @foreach (var cliente in ViewBag.Clientes)
                 {
                     if (ViewBag.idCliente == cliente.id_client)
@@ -20,7 +20,7 @@
                     }
                     else
                     {
-                    <option value="@cliente.id_client">@cliente.names</option>
+                        <option value="@cliente.id_client">@cliente.names</option>
                     }
                 }
             </select>
@@ -28,12 +28,12 @@
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label text-white">Seleccione una bodega a enviar</label>
             <select class="custom-select" id="warehouse">
-                <option selected>Bodegas...</option>
+                <option selected value="0">Bodegas...</option>
                 @foreach (var warehouse in ViewBag.Warehouse)
                 {
                     if (ViewBag.idWarehouse == warehouse.id_warehouse)
                     {
-                <option value="@warehouse.id_warehouse" selected>@warehouse.name_warehouse</option>
+                        <option value="@warehouse.id_warehouse" selected>@warehouse.name_warehouse</option>
                     }
                     else
                     {
@@ -45,56 +45,174 @@
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label text-white">Seleccione sucursal a enviar</label>
             <select class="custom-select" id="branchoffice">
-                <option selected>Sucursales...</option>
+                <option selected value="0">Sucursales...</option>
                 @foreach (var sucursal in ViewBag.BranchOffice)
                 {
                     if (ViewBag.idBranchOffice == sucursal.id_branch)
                     {
-                <option value="@sucursal.id_branch" selected>@sucursal.name_branch</option>
+                        <option value="@sucursal.id_branch" selected>@sucursal.name_branch</option>
                     }
                     else
                     {
                         <option value="@sucursal.id_branch">@sucursal.name_branch</option>
                     }
-                    
+
                 }
             </select>
         </div>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label text-white">Seleccione un departamento</label>
             <select class="custom-select" id="department">
-                <option selected>Departamentos...</option>
+                <option selected value="0">Departamentos...</option>
                 @foreach (var department in ViewBag.Department)
                 {
                     if (ViewBag.idDepartment == department.id_department)
                     {
-                <option value="@department.id_department" selected>@department.department_name - @department.prefix</option>
+                        <option value="@department.id_department" selected>@department.department_name - @department.prefix</option>
                     }
                     else
                     {
                         <option value="@department.id_department">@department.department_name - @department.prefix</option>
                     }
-                    
+
                 }
             </select>
         </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-white">Seleccione el estado del manifiesto</label>
+            <select class="custom-select" id="shipmentstatus">
+                <option value="0">Estados...</option>
+                @foreach (var shipmentStatus in ViewBag.ShipmentStatus)
+                {
+                    if (ViewBag.idShipmentStatus == shipmentStatus.id_shipment_status)
+                    {
+                        <option value="@shipmentStatus.id_shipment_status" selected>@shipmentStatus.shipment_status_name</option>
+                    }
+                    else
+                    {
+                        <option value="@shipmentStatus.id_shipment_status">@shipmentStatus.shipment_status_name</option>
+                    }
+
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-white">Seleccione el tipo de pago </label>
+            <select class="custom-select" id="payment_type">
+                <option value="0">Tipo de pago...</option>
+                @foreach (var paymentType in ViewBag.PaymentType)
+                {
+                    if (ViewBag.idPaymentType == paymentType.id_pay)
+                    {
+                        <option value="@paymentType.id_pay" selected>@paymentType.name_pay</option>
+                    }
+                    else
+                    {
+                        <option value="@paymentType.id_pay">@paymentType.name_pay</option>
+                    }
+
+                }
+            </select>
+        </div>
+
+        <div class="mb-4 my-5">
+            <label for="exampleInputEmail1" class="form-label text-white">Intentos fallidos</label>
+            <input type="number" id="failed_attempt" class="ml-5" value="@ViewBag.FailedAttempt" />
+        </div>
+
+        <div class="mb-4 my-5">
+            <label for="exampleInputEmail1" class="form-label text-white">Fecha de envio de manifiesto</label>
+            <input type="datetime-local" id="client_send_date" class="ml-5"
+                   name="meeting-time">
+        </div>
+
+        <div class="mb-4 my-5">
+            <label for="exampleInputEmail1" class="form-label text-white">Fecha de llegada a la bodega</label>
+            <input type="datetime-local" id="arrival_date_warehouse" class="ml-5"
+                   name="meeting-time">
+        </div>
+
+        <div class="mb-4 my-5">
+            <label for="exampleInputEmail1" class="form-label text-white">Fecha de llegada a la sucursal</label>
+            <input type="datetime-local" id="arrival_date_branchoffice" class="ml-5"
+                   name="meeting-time">
+        </div>
+
         <div class="mb-3 form-check text-center">
             <input type="checkbox" class="form-check-input" id="active">
             <label class="form-check-label text-white" for="exampleCheck1">Activo</label>
         </div>
         <div class="text-center my-5">
-            <button type="submit" class="btn btn-lg btn-primary" id="frm">Crear</button>
+            <button type="submit" class="btn btn-lg btn-warning" id="frm">Editar</button>
         </div>
     </form>
 </div>
 
 <div class="pl-5">
-    <a href="/Manifiestos/index" class="btn btn-warning text-white">Regresar</a>
+    <a href="/Manifiestos/index" class="btn btn-primary text-white">Regresar</a>
 </div>
 
 <script>
     $(document).ready(function () {
         $("#active").prop('checked',@ViewBag.active == 1 ? true : false);
+
+        let arrivalDate = new Date("@ViewBag.ArrivalWarehouseDate");
+        let formatArrivalDate = arrivalDate.getFullYear() + "-" + (arrivalDate.getMonth() > 9 ? arrivalDate.getMonth() : "0" + arrivalDate.getMonth()) + "-" +
+            (arrivalDate.getDay() > 9 ? arrivalDate.getDay() : "0" + arrivalDate.getDay()) + "T" + (arrivalDate.getHours() > 9 ? arrivalDate.getHours() : "0" + arrivalDate.getHours()) + ":"
+            + (arrivalDate.getMinutes() > 9 ? arrivalDate.getMinutes() : "0" + arrivalDate.getMinutes())
+        $("#arrival_date_warehouse").val(formatArrivalDate);
+
+        let BranchArrivalDate = new Date("@ViewBag.ArrivalBranchOfficeDate");
+        let formatArrivalDateBranch = BranchArrivalDate.getFullYear() + "-" + (BranchArrivalDate.getMonth() > 9 ? BranchArrivalDate.getMonth() : "0" + BranchArrivalDate.getMonth()) + "-" +
+            (BranchArrivalDate.getDay() > 9 ? BranchArrivalDate.getDay() : "0" + BranchArrivalDate.getDay()) + "T" + (BranchArrivalDate.getHours() > 9 ? BranchArrivalDate.getHours() : "0" + BranchArrivalDate.getHours()) + ":"
+            + (BranchArrivalDate.getMinutes() > 9 ? BranchArrivalDate.getMinutes() : "0" + BranchArrivalDate.getMinutes())
+        $("#arrival_date_branchoffice").val(formatArrivalDateBranch);
+
+        let ClientSendDate = new Date("@ViewBag.ClientSendDate");
+        let formatClientSendDate = ClientSendDate.getFullYear() + "-" + (ClientSendDate.getMonth() > 9 ? ClientSendDate.getMonth() : "0" + ClientSendDate.getMonth()) + "-" +
+            (ClientSendDate.getDay() > 9 ? ClientSendDate.getDay() : "0" + ClientSendDate.getDay()) + "T" + (ClientSendDate.getHours() > 9 ? ClientSendDate.getHours() : "0" + ClientSendDate.getHours()) + ":"
+            + (ClientSendDate.getMinutes() > 9 ? ClientSendDate.getMinutes() : "0" + ClientSendDate.getMinutes())
+        $("#client_send_date").val(formatClientSendDate);
     });
+
+    $("#frm").click((e) => {
+        e.preventDefault();
+        let parametros = {
+            "id_client": $("#client").val(),
+            "shipment_status": $("#shipmentstatus").val(),
+            "id_warehouse_dest": $("#warehouse").val(),
+            "id_branchoffice": $("#branchoffice").val(),
+            "id_department": $("#department").val(),
+            "arrival_warehouse_date": $("#arrival_date_warehouse").val() !== "" ? new Date($("#arrival_date_warehouse").val()).toISOString().slice(0, 19).replace('T', ' ') : ""  ,
+            "arrival_branchoffice": $("#arrival_date_branchoffice").val() !== "" ? new Date($("#arrival_date_branchoffice").val()).toISOString().slice(0, 19).replace('T', ' ') : "" ,
+            "client_send_date": new Date($("#client_send_date").val()).toISOString().slice(0, 19).replace('T', ' '),
+            "payment_type": $("#payment_type").val(),
+            "failed_attempt": $("#failed_attempt").val(),
+            "active": $("#active").prop("checked") ? 1 : 0
+        }
+
+        let settings = {
+          "url": "http://localhost:61212/api/shipment/"+@ViewBag.idShipment,
+          "method": "PUT",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+            },
+            "data": JSON.stringify(parametros),
+        };
+
+        $.ajax(settings).done(function (response) {
+            if (response) {  Swal.fire({ title: 'Manifiesto editado correctamente', icon: 'warning' }).then(() => {
+                     document.location.href = "@Url.Content("~/Manifiestos/Index")";
+                    })
+              } else {
+                Swal.fire({ title: 'Error al crear el manifiesto', icon: 'error' })
+            }
+        });
+         
+         
+
+    })
 
 </script>

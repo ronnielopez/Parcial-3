@@ -14,10 +14,26 @@
             <input type="text" class="form-control" id="nombre" aria-describedby="emailHelp" value="@ViewBag.name">
             <div id="emailHelp" class="form-text text-white">Colocar el nombre de la sucursal.</div>
         </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-white">Seleccione una bodega</label>
+            <select class="custom-select" id="warehouse">
+                @foreach (var warehouse in ViewBag.WarehouseList)
+                {
+                    if (ViewBag.idWarehouse == warehouse.id_warehouse)
+                    {
+                        <option value="@warehouse.id_warehouse" selected>@warehouse.name_warehouse</option>
+                    }
+                    else
+                    {
+                        <option value="@warehouse.id_warehouse">@warehouse.name_warehouse</option>
+                    }
+                }
+            </select>
+        </div>
         <div class="mb-3 form-check text-center">
             <input type="checkbox" class="form-check-input" id="active">
 
-<label class="form-check-label text-white" for="exampleCheck1">Activo</label>
+            <label class="form-check-label text-white" for="exampleCheck1">Activo</label>
         </div>
         <div class="text-center my-5">
             <button type="submit" class="btn btn-lg btn-primary" id="frm">Editar</button>
@@ -40,16 +56,10 @@
         url = "@Url.Content("~/Sucursules/UpdatePost")"
         let parametros = {
             "name_branch": document.getElementById("nombre").value,
+            "id_warehouse": $("#warehouse").val(),
             "active": $("#active").prop("checked") ? 1 : 0,
             "id": @ViewBag.id,
         }
-        /*$.post(url, parametros, function (data) {
-                        if (data == "1") {*/
-                            //document.location.href = "@Url.Content("~/Sucursules/Index")";
-                        /*} else {
-                            console.log("Error al insertar")
-            }
-                    })*/
         let settings = {
             "url": "http://localhost:61212/api/branchoffice/"+@ViewBag.id,
             "method": "PUT",

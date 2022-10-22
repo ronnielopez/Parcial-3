@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/_LayoutAdmin/_LayoutAdmin.cshtml";
+}
+<div class="row container">
+    <div class="col-sm-12 my-4 container text-white pl-5">
+        <h1>Tracking de paquete</h1>
+    </div>
+</div>
+
+<div class="row container pl-5 ml-5">
+    <div class="col-sm-12">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label text-white">Coloca tu numero de tracking</label>
+            <input type="text" class="form-control" id="buscar" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text text-white">Ejemplo 012457845SAN.</div>
+        </div>
+        <div class="text-center my-5">
+            <button class="btn btn-lg btn-success" id="frm">Buscar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#frm").click(() => {
+        var settings = {
+            "url": "http://localhost:61212/api/tracking",
+            "method": "POST",
+            "timeout": 0,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "data": JSON.stringify($("#buscar").val()),
+        };
+
+        $.ajax(settings).done(function (response) {
+            console.log(response)
+            if (response.id_shipment) {
+                Swal.fire({
+                    title: "Tracking Manifiestos",
+                    html: `
+                    <div class='container text-center'>
+                    <div class='row text-center'> <h4> Tracking Number </h4> </div>
+                    <div class='row text-danger'> <h5> ${response.tracking_number} </h5> </div>
+                    <div class='row text-center'> <h4> Estatus de pedido </h4> </div>
+                    <div class='row text-danger'> <h5> ${response.shipment_status_name} </h5> </div>
+                    <div class='row text-center'> <h4> En camino hacia </h4> </div>
+                    <div class='row text-danger'> <h5> ${response.warehouse_name_dest} </h5> </div>
+                    <div class='row text-center'> <h4> Hacia la sucursal de </h4> </div>
+                    <div class='row text-danger'> <h5> ${response.name_branch} </h5> </div>
+                    <div class='row text-center'> <h4> Fecha de envio </h4> </div>
+                    <div class='row text-danger'> <h5> ${response.client_send_date} </h5> </div>
+                   </div>`
+                })
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "No se ha encontrado ese manifiesto"
+                })
+            }
+
+        });
+    })
+    
+</script>
